@@ -1,0 +1,44 @@
+{
+  "name": "@plannotator/agent-bridge",
+  "version": "0.1.0",
+  "description": "Host-agnostic bridge client for the Plannotator agent dispatch protocol: registration, claim loop, bundle rendering and sanitization, comment operations, and the activity beacon.",
+  "type": "module",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/plannotator/agent-bridge.git"
+  },
+  "homepage": "https://github.com/plannotator/agent-bridge#readme",
+  "bugs": {
+    "url": "https://github.com/plannotator/agent-bridge/issues"
+  },
+  "keywords": [
+    "plannotator",
+    "artifact-server",
+    "agent",
+    "bridge",
+    "mcp"
+  ],
+  "exports": {
+    ".": "./index.ts"
+  },
+  "files": [
+    "index.ts",
+    "PROTOCOL.md",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "zod": "^4.4.3"
+  },
+  "devDependencies": {
+    "@types/node": "^24.0.0",
+    "typescript": "^5.7.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
