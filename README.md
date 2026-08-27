@@ -65,6 +65,11 @@ Rejecting it fails that dispatch and leaves the bridge available for later
 work. Reserve a synchronous throw for an invalid host handle that requires the
 claim loop to stop.
 
+`renderBundleMessage(bundle)` defaults to the native/channel instruction that
+names `artifact_comments`. Pass `"mailbox"` as its second argument when the
+receiving agent instead has the MCP `comment_reply` and `comment_resolve` tools.
+Both profiles use the same sanitization and message structure.
+
 ## Ships TypeScript source
 
 The package exports `index.ts` directly. Every current host loads TypeScript
