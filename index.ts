@@ -40,8 +40,15 @@ export interface HostPort {
   isCompacting(): boolean;
   /** Surface one short informational notice to the user. */
   notify(message: string, kind: BridgeNoticeKind): void;
-  /** Inject one user message; the bridge always names follow-up delivery. */
-  sendUserMessage(text: string, delivery: FollowUpDelivery): void;
+  /**
+   * Inject one user message; the bridge always names follow-up delivery.
+   * A returned promise resolves only after the host admits the message.
+   * A synchronous throw means the host handle itself is no longer usable.
+   */
+  sendUserMessage(
+    text: string,
+    delivery: FollowUpDelivery,
+  ): void | Promise<void>;
 }
 
 // ---------------------------------------------------------------------------
@@ -1070,14 +1077,27 @@ export function startBridge(options: StartBridgeOptions): BridgeHandle {
       throw error;
     }
     if (stopped) return;
-    callPort(() => {
+    callPort(() =>
       options.host.notify(
         `Artifact Server: delivering ${dispatch.threadIds.length} ` +
           `annotation(s) from ${dispatch.sender.displayName}.`,
         "info",
+      )
+    );
+    try {
+      await callPort(() =>
+        options.host.sendUserMessage(message, {deliverAs: "followUp"})
       );
-      options.host.sendUserMessage(message, {deliverAs: "followUp"});
-    });
+    } catch (error) {
+      if (error instanceof HostHandleLostError) throw error;
+      await reportOutcome(
+        dispatch.id,
+        agent,
+        "failed",
+        `The host refused the delivery: ${describeError(error)}`,
+      );
+      return;
+    }
     beacon.bundleAccepted(dispatch.id, dispatch.threadIds);
     await reportOutcome(dispatch.id, agent, "delivered", null);
   };

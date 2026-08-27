@@ -47,7 +47,7 @@ const bridge = startBridge({
   host: {
     isCompacting: () => false,
     notify: (message, kind) => { /* surface a notice in your host */ },
-    sendUserMessage: (text) => { /* inject a follow-up message */ },
+    sendUserMessage: async (text) => { /* await host admission */ },
   },
   hostname: hostname(),
   kind: "my-harness",
@@ -58,6 +58,12 @@ const bridge = startBridge({
 Reference adapters live in the Artifact Server repository under
 `integrations/`: the Pi extension, the OpenCode plugin, and the Claude Code
 channel — each ~250 lines over this core.
+
+`sendUserMessage` may return `void` for a synchronous host or a promise for an
+asynchronous host. Resolve that promise only after the host admits the message.
+Rejecting it fails that dispatch and leaves the bridge available for later
+work. Reserve a synchronous throw for an invalid host handle that requires the
+claim loop to stop.
 
 ## Ships TypeScript source
 

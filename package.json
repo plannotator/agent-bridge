@@ -1,6 +1,6 @@
 {
   "name": "@plannotator/agent-bridge",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Host-agnostic bridge client for the Plannotator agent dispatch protocol: registration, claim loop, bundle rendering and sanitization, comment operations, and the activity beacon.",
   "type": "module",
   "license": "MIT",
