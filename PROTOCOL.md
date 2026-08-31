@@ -140,7 +140,7 @@ Terminal states never transition. `failed` and `canceled` clear the thread marke
 
 ## Activity beacon
 
-**Planned.** Optional refinement on top of the claim heartbeat.
+The activity beacon is an optional refinement on top of the claim heartbeat.
 
 ```text
 POST /api/v1/agents/:agentId/activity    {"state": "thinking" | "replying" | "idle", "dispatchId": "dsp_…"}
